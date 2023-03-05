@@ -16,6 +16,26 @@ export default {
   component: Editor,
 };
 
+export const EnableForcedRootBlockFalseEditor: Story = () => {
+  const [ data, setData ] = React.useState(sampleContent);
+  return (
+    <div>
+      <Editor
+        apiKey={apiKey}
+        value={data}
+        cloudChannel='5.9'
+        init={{
+          forced_root_block: false,
+        }}
+        onEditorChange={(e) => setData(e)}
+      />
+    </div>
+  );
+};
+EnableForcedRootBlockFalseEditor.parameters = {
+  controls: { hideNoControlsWarning: true },
+};
+
 export const IframeEditor: Story = () => (
   <Editor
     apiKey={apiKey}

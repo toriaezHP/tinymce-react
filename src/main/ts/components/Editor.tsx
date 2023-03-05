@@ -15,7 +15,7 @@ export interface IProps {
   initialValue: string;
   onEditorChange: (a: string, editor: TinyMCEEditor) => void;
   value: string;
-  init: EditorOptions & { selector?: undefined; target?: undefined };
+  init: EditorOptions & { selector?: undefined; target?: undefined } | { forced_root_block?: boolean | string };
   tagName: string;
   cloudChannel: string;
   plugins: NonNullable<EditorOptions['plugins']>;
