@@ -7,6 +7,7 @@ import { EditorPropTypes, IEditorPropTypes } from './EditorPropTypes';
 import { Bookmark, Editor as TinyMCEEditor, EditorEvent, TinyMCE } from 'tinymce';
 
 type EditorOptions = Parameters<TinyMCE['init']>[0];
+type CustomEditorOptions = Omit<EditorOptions, 'forced_root_block'> & { forced_root_block?: boolean | string};
 
 export interface IProps {
   apiKey: string;
@@ -15,7 +16,7 @@ export interface IProps {
   initialValue: string;
   onEditorChange: (a: string, editor: TinyMCEEditor) => void;
   value: string;
-  init: EditorOptions & { selector?: undefined; target?: undefined } | { forced_root_block?: boolean | string };
+  init: CustomEditorOptions & { selector?: undefined; target?: undefined };
   tagName: string;
   cloudChannel: string;
   plugins: NonNullable<EditorOptions['plugins']>;
