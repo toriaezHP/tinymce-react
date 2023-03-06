@@ -4,10 +4,10 @@ import { ScriptItem, ScriptLoader } from '../ScriptLoader2';
 import { getTinymce } from '../TinyMCE';
 import { isFunction, isTextareaOrInput, mergePlugins, uuid, configHandlers, isBeforeInputEventAvailable, isInDoc, setMode } from '../Utils';
 import { EditorPropTypes, IEditorPropTypes } from './EditorPropTypes';
-import { Bookmark, Editor as TinyMCEEditor, EditorEvent, TinyMCE } from 'tinymce';
+import { Bookmark, Editor as TinyMCEEditor, EditorEvent, RawEditorOptions, TinyMCE } from 'tinymce';
 
 type EditorOptions = Parameters<TinyMCE['init']>[0];
-type CustomEditorOptions = Omit<EditorOptions, 'forced_root_block'> & { forced_root_block?: boolean | string};
+type CustomEditorOptions = Omit<RawEditorOptions, 'forced_root_block'> & { forced_root_block?: boolean | string };
 
 export interface IProps {
   apiKey: string;
@@ -339,15 +339,16 @@ export class Editor extends React.Component<IAllProps> {
       throw new Error('tinymce should have been loaded into global scope');
     }
 
-    const finalInit: EditorOptions = {
+    const finalInit: CustomEditorOptions = {
       ...this.props.init,
       selector: undefined,
       target,
       readonly: this.props.disabled,
       inline: this.inline,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       plugins: mergePlugins(this.props.init?.plugins, this.props.plugins),
       toolbar: this.props.toolbar ?? this.props.init?.toolbar,
-      setup: (editor) => {
+      setup: (editor: any) => {
         this.editor = editor;
         this.bindHandlers({});
 
@@ -358,7 +359,7 @@ export class Editor extends React.Component<IAllProps> {
         // problem... We avoid it by sneaking in a set content before the first
         // "official" setContent and using TinyMCE to do the sanitization.
         if (this.inline && !isTextareaOrInput(target)) {
-          editor.once('PostRender', (_evt) => {
+          editor.once('PostRender', (_evt: any) => {
             editor.setContent(this.getInitialValue(), { no_events: true });
           });
         }
@@ -367,7 +368,7 @@ export class Editor extends React.Component<IAllProps> {
           this.props.init.setup(editor);
         }
       },
-      init_instance_callback: (editor) => {
+      init_instance_callback: (editor: any) => {
         // check for changes that happened since tinymce.init() was called
         const initialValue = this.getInitialValue();
         this.currentContent = this.currentContent ?? editor.getContent();
@@ -394,6 +395,6 @@ export class Editor extends React.Component<IAllProps> {
       target.value = this.getInitialValue();
     }
 
-    tinymce.init(finalInit);
+    tinymce.init(finalInit as RawEditorOptions);
   };
 }
