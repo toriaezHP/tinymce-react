@@ -1,5 +1,5 @@
 {
-  "description": "Official TinyMCE React Component",
+  "description": "Custom TinyMCE React Component",
   "repository": {
     "url": "https://github.com/tinymce/tinymce-react"
   },
