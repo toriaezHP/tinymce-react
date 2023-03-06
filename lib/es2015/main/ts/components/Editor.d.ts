@@ -4,6 +4,9 @@ import { ScriptItem } from '../ScriptLoader2';
 import { IEditorPropTypes } from './EditorPropTypes';
 import { Editor as TinyMCEEditor, TinyMCE } from 'tinymce';
 type EditorOptions = Parameters<TinyMCE['init']>[0];
+type CustomEditorOptions = Omit<EditorOptions, 'forced_root_block'> & {
+    forced_root_block?: boolean | string;
+};
 export interface IProps {
     apiKey: string;
     id: string;
@@ -11,11 +14,9 @@ export interface IProps {
     initialValue: string;
     onEditorChange: (a: string, editor: TinyMCEEditor) => void;
     value: string;
-    init: EditorOptions & {
+    init: CustomEditorOptions & {
         selector?: undefined;
         target?: undefined;
-    } | {
-        forced_root_block?: boolean | string;
     };
     tagName: string;
     cloudChannel: string;
