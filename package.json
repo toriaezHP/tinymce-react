@@ -4,7 +4,7 @@
     "url": "https://github.com/tinymce/tinymce-react"
   },
   "files": [
-    "lib",
+    "lib/",
     "README.md",
     "CHANGELOG.md",
     "LICENSE.txt"
